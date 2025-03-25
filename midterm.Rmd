@@ -44,8 +44,12 @@ bucks_shots <- teams_shots(
 )
 print(bucks_shots)
 
+
+```
+
+```{r}
 ggplot(bucks_shots, aes(x = locationX, y = locationY, color = factor(isShotMade))) +
-  geom_point() +  geom_hex(bins = 30) +
+  geom_point() +
   scale_color_manual(values = c("FALSE" = "red", "TRUE" = "green")) +  
   labs(
     title = "Milwaukee Bucks Shot Locations",
@@ -53,9 +57,7 @@ ggplot(bucks_shots, aes(x = locationX, y = locationY, color = factor(isShotMade)
     y = "Y Location",
     color = "Shot Success"
   )
-
 ```
-
 
 ## The Tasks
 
