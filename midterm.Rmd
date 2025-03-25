@@ -26,9 +26,10 @@ library(devtools)
 library(tidyverse)
 library(nbastatR)
 library(ggplot2)
+library(dplyr)
 Sys.setenv("VROOM_CONNECTION_SIZE" = 131072 * 2)
 
-bucks_shots <- teams_shots(
+bucks_shots_full <- teams_shots(
   teams = "Milwaukee Bucks",
   team_ids = NULL,
   all_active_teams = F,
@@ -42,8 +43,13 @@ bucks_shots <- teams_shots(
   nest_data = F,
   return_message = T
 )
-print(bucks_shots)
+```
+```{r}
+library(sportyR)
 
+bball_court <- geom_basketball("nba", display_range = "offense", rotation = 270, xlims = 248, ylims = 50)
+
+bball_court + geom_point(data = bucks_shots, aes(locationX, locationY), color = "#2251b8")  
 
 ```
 
