@@ -27,9 +27,11 @@ library(tidyverse)
 library(nbastatR)
 library(ggplot2)
 library(dplyr)
+library(purrr)
 Sys.setenv("VROOM_CONNECTION_SIZE" = 131072 * 2)
 
-bucks_shots_full <- teams_shots(
+
+bucks_shots_23_unclean <- teams_shots(
   teams = "Milwaukee Bucks",
   team_ids = NULL,
   all_active_teams = F,
@@ -44,19 +46,107 @@ bucks_shots_full <- teams_shots(
   return_message = T
 )
 
-library(sportyR)
+bucks_shots_23 <- bucks_shots_23_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason")
 
-bball_court <- geom_basketball("nba", display_range = "offense", rotation = 270)
+bucks_shots_22_unclean <- teams_shots(
+  teams = "Milwaukee Bucks",
+  team_ids = NULL,
+  all_active_teams = F,
+  season_types = "Regular Season",
+  seasons = 2022,
+  measures = "FGA",
+  periods = 0,
+  months = 0,
+  date_from = NA,
+  date_to = NA,
+  nest_data = F,
+  return_message = T
+) 
+bucks_shots_22 <- bucks_shots_22_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason")
 
-bball_court + geom_point(data = bucks_shots, aes(locationX, locationY), color = "green") + scale_x_reverse()
- 
+bucks_shots_21_unclean <- teams_shots(
+  teams = "Milwaukee Bucks",
+  team_ids = NULL,
+  all_active_teams = F,
+  season_types = "Regular Season",
+  seasons = 2021,
+  measures = "FGA",
+  periods = 0,
+  months = 0,
+  date_from = NA,
+  date_to = NA,
+  nest_data = F,
+  return_message = T
+) 
+bucks_shots_21 <- bucks_shots_21_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason")
 
+bucks_shots_20_unclean <- teams_shots(
+  teams = "Milwaukee Bucks",
+  team_ids = NULL,
+  all_active_teams = F,
+  season_types = "Regular Season",
+  seasons = 2020,
+  measures = "FGA",
+  periods = 0,
+  months = 0,
+  date_from = NA,
+  date_to = NA,
+  nest_data = F,
+  return_message = T
+) 
+bucks_shots_20 <- bucks_shots_20_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason")
+
+bucks_shots_19_unclean <- teams_shots(
+  teams = "Milwaukee Bucks",
+  team_ids = NULL,
+  all_active_teams = F,
+  season_types = "Regular Season",
+  seasons = 2019,
+  measures = "FGA",
+  periods = 0,
+  months = 0,
+  date_from = NA,
+  date_to = NA,
+  nest_data = F,
+  return_message = T
+) 
+bucks_shots_19 <- bucks_shots_19_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason")
+
+bucks_shots_18_unclean <- teams_shots(
+  teams = "Milwaukee Bucks",
+  team_ids = NULL,
+  all_active_teams = F,
+  season_types = "Regular Season",
+  seasons = 2018,
+  measures = "FGA",
+  periods = 0,
+  months = 0,
+  date_from = NA,
+  date_to = NA,
+  nest_data = F,
+  return_message = T
+) 
+bucks_shots_18 <- bucks_shots_18_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason")
+
+bucks_shots_list <- list(bucks_shots_23, bucks_shots_22, bucks_shots_21, bucks_shots_20, bucks_shots_19, bucks_shots_18)
+
+bucks_shots_all <- reduce(bucks_shots_list, full_join, by = colnames(bucks_shots_23))
+ bucks_shots_all$yearSeason <- as.factor(bucks_shots_all$yearSeason)
 ```
 ```{r}
-bball_court <- geom_basketball("nba", display_range = "offense", rotation = 270) 
+library(sportyR)
 
+bball_court <- geom_basketball("nba", x_trans = 43, rotation = 90, display_range = "defense")
 
-bball_court + geom_point(data = bucks_shots, aes(locationX, locationY), color = "green") + scale_x_reverse()  
+bball_court + 
+  geom_point(data = bucks_shots_all, size = .3, alpha = .5, aes(locationX/10, locationY/10, color = isShotMade)) + 
+  scale_colour_manual(values = c( "#8B0000", "#006400"), labels = c("Missed Shots", "Made Shots")) + 
+  labs(
+    title = "Milwaukee Bucks Shoting Patterns",
+    x = "X Location",
+    y = "Y Location",
+    color = "Shot Outcome"
+  ) + scale_x_reverse() + facet_wrap(~ yearSeason) + guides(color = guide_legend(override.aes = list(size = 4)))
 ```
 
 ```{r}
@@ -72,6 +162,22 @@ bucks_shots <- bucks_shots_full %>% select("isShotMade", "locationX", "locationY
     color = "Shot Success"
   )
 ```
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## The Tasks
 
