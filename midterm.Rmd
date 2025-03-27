@@ -139,8 +139,9 @@ library(sportyR)
 bball_court <- geom_basketball("nba", x_trans = 43, rotation = 90, display_range = "defense")
 
 bball_court + 
-  geom_point(data = bucks_shots_all, size = .3, alpha = .5, aes(locationX/10, locationY/10, color = isShotMade)) + 
+geom_point(data = bucks_shots_all, size = .3, alpha = .5, aes(locationX/10, locationY/10, color = isShotMade)) + 
   scale_colour_manual(values = c( "#8B0000", "#006400"), labels = c("Missed Shots", "Made Shots")) + 
+  
   labs(
     title = "Milwaukee Bucks Shoting Patterns",
     x = "X Location",
@@ -161,6 +162,8 @@ bucks_shots <- bucks_shots_full %>% select("isShotMade", "locationX", "locationY
     y = "Y Location",
     color = "Shot Success"
   )
+  geom_point(data = bucks_shots_all, size = .3, alpha = .5, aes(locationX/10, locationY/10, color = isShotMade)) + 
+  scale_colour_manual(values = c( "#8B0000", "#006400"), labels = c("Missed Shots", "Made Shots"))
 ```
 ```{r}
 
