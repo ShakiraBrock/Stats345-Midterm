@@ -46,7 +46,7 @@ bucks_shots_24_unclean <- teams_shots(
   return_message = T
 )
 
-bucks_shots_24 <- bucks_shots_24_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason")
+bucks_shots_24 <- bucks_shots_24_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer")
 
 bucks_shots_19_unclean <- teams_shots(
   teams = "Milwaukee Bucks",
@@ -62,7 +62,7 @@ bucks_shots_19_unclean <- teams_shots(
   nest_data = F,
   return_message = T
 ) 
-bucks_shots_19 <- bucks_shots_19_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason")
+bucks_shots_19 <- bucks_shots_19_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer")
 
 bucks_shots_14_unclean <- teams_shots(
   teams = "Milwaukee Bucks",
@@ -78,7 +78,7 @@ bucks_shots_14_unclean <- teams_shots(
   nest_data = F,
   return_message = T
 ) 
-bucks_shots_14 <- bucks_shots_14_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason")
+bucks_shots_14 <- bucks_shots_14_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer")
 
 bucks_shots_09_unclean <- teams_shots(
   teams = "Milwaukee Bucks",
@@ -94,7 +94,7 @@ bucks_shots_09_unclean <- teams_shots(
   nest_data = F,
   return_message = T
 ) 
-bucks_shots_09 <- bucks_shots_09_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason")
+bucks_shots_09 <- bucks_shots_09_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer")
 
 
 bucks_shots_list <- list(bucks_shots_24, bucks_shots_19, bucks_shots_14, bucks_shots_09)
@@ -124,28 +124,53 @@ geom_point(data = bucks_shots_all, size = .3, alpha = .2, aes(locationX/10, loca
 ```
 
 ```{r}
-bucks_shots_23 <- teams_shots(
-  teams = "Milwaukee Bucks",
-  team_ids = NULL,
-  all_active_teams = F,
-  season_types = "Regular Season",
-  seasons = 2023,
-  measures = "FGA",
-  periods = 0,
-  months = 0,
-  date_from = NA,
-  date_to = NA,
-  nest_data = F,
-  return_message = T)
 salaries <- hoopshype_salaries(
   teams = NULL,
-  all_teams = TRUE,
-  assume_player_opt_out = T,
-  assume_team_doesnt_exercise = T,
-  nest_data = F,
+  all_teams = TRUE, 
+  assume_player_opt_out = TRUE,
+  assume_team_doesnt_exercise = TRUE,
+  nest_data = FALSE,
   return_message = TRUE
-)
-print(bucks_shots_23)
+) %>%
+  filter(urlTeamSalaryHoopsHype == "https://hoopshype.com/salaries/milwaukee_bucks/")
+
+salaries_clean <- salaries %>% filter(slugSeason == "2024-25") %>%
+  select(namePlayer, amountContract) %>%
+  mutate(
+    salary_bracket = case_when(
+      amountContract >= 20e6 ~ "High",    
+      amountContract >= 5e6  ~ "Middle",  
+      TRUE                  ~ "Low"       
+    )
+  ) %>%
+  select(-amountContract)
+
+bucks_salaries <- bucks_shots_24 %>%
+  left_join(salaries_clean, by = "namePlayer") %>% filter(!is.na(salary_bracket)) %>% mutate(salary_bracket = factor(salary_bracket, levels = c("High", "Middle", "Low")))
+
+bball_court + 
+  geom_point(data = bucks_salaries, 
+             aes(locationX/10, locationY/10, color = isShotMade), 
+             size = 0.5, alpha = 0.5) + 
+  scale_colour_manual(values = c( "#8B0000", "#006400"), labels = c("Missed Shots", "Made Shots")) +
+  labs(
+    title = "Past Shoting Effectiveness and Future Contracted Pay",
+    x = "X Location",
+    y = "Y Location",
+    color = "Shot Outcome"
+  ) + 
+  scale_x_reverse() + 
+  facet_wrap(~ yearSeason) + 
+  guides(color = guide_legend(override.aes = list(size = 4)),
+         shape = guide_legend(override.aes = list(size = 4))) + 
+  dark_theme_classic() +  
+  theme(
+    axis.line = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title = element_blank()
+  ) +  facet_wrap(~ salary_bracket)
+
 ```
 
 
