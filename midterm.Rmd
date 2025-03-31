@@ -173,6 +173,19 @@ bball_court +
 
 ```
 
+```{r}
+ bad_plot <- ggplot() + geom_point(data = bucks_shots_21, 
+             aes(locationX, locationY, color = isShotMade), 
+             size = 1, alpha = 0.5) + 
+  scale_colour_manual(values = c( "#8B0000", "#006400"), labels = c("Missed Shots", "Made Shots")) +
+  labs(
+    title = "Past Shoting Effectiveness and Future Contracted Pay",
+    x = "X Location",
+    y = "Y Location",
+    color = "Shot Outcome"
+  )
+print(bad_plot)
+```
 
 
 
