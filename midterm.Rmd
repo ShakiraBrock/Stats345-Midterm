@@ -28,7 +28,7 @@ library(nbastatR)
 library(ggplot2)
 library(dplyr)
 library(purrr)
-Sys.setenv("VROOM_CONNECTION_SIZE" = 131072 * 2)
+Sys.setenv("VROOM_CONNECTION_SIZE" = 131072 * 2) #Fix to load in the NBA data without error
 
 
 bucks_shots_24_unclean <- teams_shots(
@@ -44,9 +44,9 @@ bucks_shots_24_unclean <- teams_shots(
   date_to = NA,
   nest_data = F,
   return_message = T
-)
+) #Loading in shooting data for the most recent full season
 
-bucks_shots_24 <- bucks_shots_24_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer")
+bucks_shots_24 <- bucks_shots_24_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer") #Selecting only relevant columns: shot outcome, shot location, year of season, name of player 
 
 bucks_shots_19_unclean <- teams_shots(
   teams = "Milwaukee Bucks",
@@ -61,8 +61,8 @@ bucks_shots_19_unclean <- teams_shots(
   date_to = NA,
   nest_data = F,
   return_message = T
-) 
-bucks_shots_19 <- bucks_shots_19_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer")
+) #Loading in data for 2019 season, five years from the most recent full season
+bucks_shots_19 <- bucks_shots_19_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer") #Selecting only relevant columns: shot outcome, shot location, year of season, name of player 
 
 bucks_shots_14_unclean <- teams_shots(
   teams = "Milwaukee Bucks",
@@ -77,8 +77,8 @@ bucks_shots_14_unclean <- teams_shots(
   date_to = NA,
   nest_data = F,
   return_message = T
-) 
-bucks_shots_14 <- bucks_shots_14_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer")
+) #Loading in data for 2014 season, 10 years from the most recent full season
+bucks_shots_14 <- bucks_shots_14_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer") #Selecting only relevant columns: shot outcome, shot location, year of season, name of player 
 
 bucks_shots_09_unclean <- teams_shots(
   teams = "Milwaukee Bucks",
@@ -93,34 +93,38 @@ bucks_shots_09_unclean <- teams_shots(
   date_to = NA,
   nest_data = F,
   return_message = T
-) 
-bucks_shots_09 <- bucks_shots_09_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer")
+) #Loading in data for 2009 season, 15 years from the most recent full season
+bucks_shots_09 <- bucks_shots_09_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer") #Selecting only relevant columns: shot outcome, shot location, year of season, name of player 
 
 
-bucks_shots_list <- list(bucks_shots_24, bucks_shots_19, bucks_shots_14, bucks_shots_09)
+bucks_shots_list <- list(bucks_shots_24, bucks_shots_19, bucks_shots_14, bucks_shots_09)#combining all of the shot data from 2009, 2014, 2019, and 2024 into one list
 
-bucks_shots_all <- reduce(bucks_shots_list, full_join, by = colnames(bucks_shots_24))
- bucks_shots_all$yearSeason <- as.factor(bucks_shots_all$yearSeason)
+bucks_shots_all <- reduce(bucks_shots_list, full_join, by = colnames(bucks_shots_24)) #reducing all of shot data that way it could be faceted by year as graphs
 ```
 ```{r}
 library(sportyR)
 library(ggdark)
 
-bball_court <- geom_basketball("nba", x_trans = 43, rotation = 90, display_range = "defense")
+bball_court <- geom_basketball("nba", x_trans = 43, rotation = 90, display_range = "defense") #Transform the x axis by 43 to change the origin to be around the hoop 
+#Rotate by 90 degrees and display range = defense to view the area of the court the data was plotted on
 
 bball_court + 
-geom_point(data = bucks_shots_all, size = .3, alpha = .2, aes(locationX/10, locationY/10, color = isShotMade)) + 
-  scale_colour_manual(values = c( "#8B0000", "#006400"), labels = c("Missed Shots", "Made Shots")) + 
+geom_point(data = bucks_shots_all, size = .3, alpha = .2, #Size is smaller and opacity is used to make the points easier to read
+           aes(locationX/10, locationY/10, color = isShotMade)) + #the X/Y coordinates are divided by 10 because the values represented a tenth of foot and the court is plotted based on feet
+scale_colour_manual(values = c( "#8B0000", "#006400"), labels = c("Missed Shots", "Made Shots")) + #Colors based on whether the shot was made are not with green/red used because it is easier to understand at a glance
+
   
   labs(
     title = "Milwaukee Bucks Shoting Patterns Over Time",
-    x = "X Location",
-    y = "Y Location",
     color = "Shot Outcome"
-  ) + scale_x_reverse() + facet_wrap(~ yearSeason) + guides(color = guide_legend(override.aes = list(size = 4, alpha = 1))) + dark_theme_classic() +  theme(axis.line = element_blank(),
+  ) + scale_x_reverse() + #The shot data is said to be inverse so this a fix so that it represents where the shots where actually at and not based on the view of the audience
+facet_wrap(~ yearSeason) + #Facet by year that way the points in the graphs are less crowded and lends itself to better analysis and viewing
+guides(color = guide_legend(override.aes = list(size = 4, alpha = 1))) + #Makes the points in the legend not opaque that way it's easier to read
+ dark_theme_classic() + #Dark theme works well against the graphs, mainly for aesthetics
+  theme(axis.line = element_blank(),
         axis.text = element_blank(),
         axis.ticks = element_blank(),
-        axis.title = element_blank())
+        axis.title = element_blank()) #Exclude any X/Y axis lines because it wouldn't be appropriate on top of the court image
 ```
 
 ```{r}
@@ -131,61 +135,47 @@ salaries <- hoopshype_salaries(
   assume_team_doesnt_exercise = TRUE,
   nest_data = FALSE,
   return_message = TRUE
-) %>%
-  filter(urlTeamSalaryHoopsHype == "https://hoopshype.com/salaries/milwaukee_bucks/")
+) %>% #Salaries for NBA players pulled
+  filter(urlTeamSalaryHoopsHype == "https://hoopshype.com/salaries/milwaukee_bucks/") #including only the Milwaukee Bucks
 
-salaries_clean <- salaries %>% filter(slugSeason == "2024-25") %>%
-  select(namePlayer, amountContract) %>%
+salaries_clean <- salaries %>% filter(slugSeason == "2024-25") %>% #Including future contracted pay for the season directly after the shot data plotted
+  select(namePlayer, amountContract) %>% #selecing only relevant columns
   mutate(
     salary_bracket = case_when(
       amountContract >= 20e6 ~ "High",    
       amountContract >= 5e6  ~ "Middle",  
       TRUE                  ~ "Low"       
     )
-  ) %>%
-  select(-amountContract)
+  ) %>% #Creating different levels of salaries
+  select(-amountContract) #Getting rid of contract amount and only have the salary range values (high, middle, low)
 
 bucks_salaries <- bucks_shots_24 %>%
-  left_join(salaries_clean, by = "namePlayer") %>% filter(!is.na(salary_bracket)) %>% mutate(salary_bracket = factor(salary_bracket, levels = c("High", "Middle", "Low")))
+  left_join(salaries_clean, by = "namePlayer") %>% filter(!is.na(salary_bracket)) %>% mutate(salary_bracket = factor(salary_bracket, levels = c("High", "Middle", "Low"))) #Joining by Name of player and fixing the order of salary levels 
 
 bball_court + 
   geom_point(data = bucks_salaries, 
-             aes(locationX/10, locationY/10, color = isShotMade), 
-             size = 0.5, alpha = 0.5) + 
+             aes(locationX/10, locationY/10, color = isShotMade), #Fixing the scale of X/Y coordinates
+             size = 0.5, alpha = 0.5) + #Increasing size and decreasing opacity since there are less points per plot
   scale_colour_manual(values = c( "#8B0000", "#006400"), labels = c("Missed Shots", "Made Shots")) +
   labs(
-    title = "Past Shoting Effectiveness and Future Contracted Pay",
+    title = "Past Shoting Effectiveness (2023-2024) and Future Contracted Pay (2024-2025)",
     x = "X Location",
     y = "Y Location",
     color = "Shot Outcome"
   ) + 
-  scale_x_reverse() + 
+  scale_x_reverse() + #inverting the x axis
   facet_wrap(~ yearSeason) + 
-  guides(color = guide_legend(override.aes = list(size = 4)),
-         shape = guide_legend(override.aes = list(size = 4))) + 
+  guides(color = guide_legend(override.aes = list(size = 4, alpha = 1))) + 
   dark_theme_classic() +  
   theme(
     axis.line = element_blank(),
     axis.text = element_blank(),
     axis.ticks = element_blank(),
     axis.title = element_blank()
-  ) +  facet_wrap(~ salary_bracket)
+  ) +  facet_wrap(~ salary_bracket) #facet by salary level for easy comparison
 
 ```
 
-```{r}
- bad_plot <- ggplot() + geom_point(data = bucks_shots_21, 
-             aes(locationX, locationY, color = isShotMade), 
-             size = 1, alpha = 0.5) + 
-  scale_colour_manual(values = c( "#8B0000", "#006400"), labels = c("Missed Shots", "Made Shots")) +
-  labs(
-    title = "Past Shoting Effectiveness and Future Contracted Pay",
-    x = "X Location",
-    y = "Y Location",
-    color = "Shot Outcome"
-  )
-print(bad_plot)
-```
 
 
 
