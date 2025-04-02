@@ -3,24 +3,11 @@ title: "STAT 345 Midterm Project"
 font: 12pt
 date: "Due April 4"
 output:
-  pdf_document: default
   word_document: default
+  pdf_document: default
   html_document: default
 ---
-
-> "Our offense is like the Pythagorean Theorem. There is no answer!", _Shaquille O'Neal_
-
-## The Background
-
-Your role for the midterm project is that of data analyst intern at an NBA (professional basketball) team. Your direct supervisor (also part of the analytics team) has asked you to create a data visualization to illustrate how (or if) the team's shots have changed over time. After some initial clarifying questions, your supervisor confessed that they had seen some pretty cool shot charts at http://savvastjortjoglou.com/nba-shot-sharts.html and would like to extend the ideas a bit. 
-
-Your data for the midterm project may come from a variety of sources, including the NBA directly, as well as Basketball-Reference, HoopsHype, and others. There are several ways to access the data, but perhaps the simplest is through the `nbastatR` package, which serves as a wrapper (or set of helper functions) for these various data sources. There is a lot of potentially useful information that can be found using this package; unfortunately, the documentation is somewhat inconsistent. For example, the documentation at https://www.rdocumentation.org/packages/nbastatR/versions/0.1.110202031 is pretty well-formatted and easy to navigate, but the current function names have changed a bit (see `?nbastatR` and click "Index"). (If you use the nbastatR package, you'll want to install the package using the following code. There are other packages with this type of data, though.) You are welcome to scrape other websites or use other packages if you choose.
-
-```
-library(devtools)
-devtools::install_github("abresler/nbastatR")
-```
-```{r}
+```{r, echo = FALSE, warning=FALSE, message = FALSE}
 
 library(devtools)
 library(tidyverse)
@@ -101,7 +88,7 @@ bucks_shots_list <- list(bucks_shots_24, bucks_shots_19, bucks_shots_14, bucks_s
 
 bucks_shots_all <- reduce(bucks_shots_list, full_join, by = colnames(bucks_shots_24)) #reducing all of shot data that way it could be faceted by year as graphs
 ```
-```{r}
+```{r, echo = FALSE, warning=FALSE, message = FALSE}
 library(sportyR)
 library(ggdark)
 
@@ -127,7 +114,7 @@ guides(color = guide_legend(override.aes = list(size = 4, alpha = 1))) + #Makes 
         axis.title = element_blank()) #Exclude any X/Y axis lines because it wouldn't be appropriate on top of the court image
 ```
 
-```{r}
+```{r, echo = FALSE, warning=FALSE, message = FALSE}
 salaries <- hoopshype_salaries(
   teams = NULL,
   all_teams = TRUE, 
@@ -146,7 +133,10 @@ salaries_clean <- salaries %>% filter(slugSeason == "2024-25") %>% #Including fu
       amountContract >= 5e6  ~ "Middle",  
       TRUE                  ~ "Low"       
     )
-  ) %>% #Creating different levels of salaries
+  ) %>% #Creating different levels of salaries 
+  # 20 million and above indicates a High salary, Between 20 million and 5 million indicates a Middle salary, Below 5 million indicates a Low salary 
+  #These numbers were used because they capture an accurate amount of players and shots
+  
   select(-amountContract) #Getting rid of contract amount and only have the salary range values (high, middle, low)
 
 bucks_salaries <- bucks_shots_24 %>%
@@ -175,13 +165,33 @@ bball_court +
   ) +  facet_wrap(~ salary_bracket) #facet by salary level for easy comparison
 
 ```
+Main Findings: 
+
+*Over time, shots have become more clustered around the three point line and close to the basket.
+
+*The use of the three point shot has increased over the last 15 years.
+
+*Lay-up shots are more common in 2014-2024 than in 2009. 
+
+*Accuracy in lay up shots has increased over time. 
+
+*Compared to 2009, the 2024 season saw less shots taken past the three point line. 
+
+*Shots taken were more spread out in 2009 and 2014. 
 
 
 
+Futher Inferences:
 
+Over time the Milwaukee Bucks shoting locations have become more strategic. Shots are commonly taken on the three point line. This can be inferred due to the increase in points clustered around the three point line in the most recent season compared to seasons past.In 2009 and 2014 for example the point density in the graphs around the three point line is less than in 2019 and 2024. Less shots are also taken far away from the three point line. In more recent seasons less shots were taken outside of the three point line. It seems that this could be a more strategic use of the three point line. 
 
+In 2024, shots are commonly clustered around the basket indicating a use of lay-up shots. 2009 saw less utilization of this type of shot. Overtime there seems to be increase in the amount of lay-ups taken due to the clustering of points.This seems to be a more strategic shot location due in part to the likelihood of success and the evidence of a clustering of made shots indicated by the green points. 
 
+Overall, the shots taken by the Milwaukee Bucks have become more efficient and strategic of high scoring and high likelihood of success. The increased utilization of the three point line indicates a strategy to score higher points per shot. The increased use of the lay-up shot and those close to the basket could indicate a strategy in taking shots that have a high likelihood of success. The clustering of green points in the later season backs up this strategy showing that made shots commoningly happen close to the basket. This in all would indicate that the Bucks have improved as a team from 2009-2024. 
 
+Future Contracted Pay: 
+
+In the above graphic, shot effectiveness and location for the 2024 season is graphed. Whether or not the shot was made is indicated by color. On the three different versions the shots are separated based on future contracted pay for the 2025 season. High pay contains shots made by players with over 20 million contracted. Middle pay contains shots made by players with contracted pay between 20 million and 5 million dollars. Low pay contains shots made by players with less than 5 million dollars contracted pay for the 2025 season. The players that are getting paid more in the future took more of the shots in 2024. The amount of shots taken decreases as pay decreases. This indicates that star players will get paid more than players who are not in the spotlight. 
 
 
 
@@ -190,6 +200,8 @@ bball_court +
 
 
 ## The Tasks
+
+fig.width = 10, fig.height = 10 - put in r{}
 
 1. (30 points) Produce a graphic displaying the shot locations for a particular team over several years. Some notes:
 
