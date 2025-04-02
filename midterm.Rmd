@@ -113,8 +113,33 @@ guides(color = guide_legend(override.aes = list(size = 4, alpha = 1))) + #Makes 
         axis.ticks = element_blank(),
         axis.title = element_blank()) #Exclude any X/Y axis lines because it wouldn't be appropriate on top of the court image
 ```
+Main Findings: 
+
+*Over time, shots have become more clustered around the three point line and close to the basket.
+
+*The use of the three point shot has increased over the last 15 years.
+
+*Lay-up shots are more common in 2014-2024 than in 2009. 
+
+*Accuracy in lay up shots has increased over time. 
+
+*Compared to 2009, the 2024 season saw less shots taken past the three point line. 
+
+*Shots taken were more spread out in 2009 and 2014. 
+
+
+Futher Inferences:
+
+Over time the Milwaukee Bucks shoting locations have become more strategic. Shots are commonly taken on the three point line. This can be inferred due to the increase in points clustered around the three point line in the most recent season compared to seasons past.In 2009 and 2014 for example the point density in the graphs around the three point line is less than in 2019 and 2024. Less shots are also taken far away from the three point line. In more recent seasons less shots were taken outside of the three point line. It seems that this could be a more strategic use of the three point line. 
+
+In 2024, shots are commonly clustered around the basket indicating a use of lay-up shots. 2009 saw less utilization of this type of shot. Overtime there seems to be increase in the amount of lay-ups taken due to the clustering of points.This seems to be a more strategic shot location due in part to the likelihood of success and the evidence of a clustering of made shots indicated by the green points. 
+
+Overall, the shots taken by the Milwaukee Bucks have become more efficient and strategic of high scoring and high likelihood of success. The increased utilization of the three point line indicates a strategy to score higher points per shot. The increased use of the lay-up shot and those close to the basket could indicate a strategy in taking shots that have a high likelihood of success. The clustering of green points in the later season backs up this strategy showing that made shots commoningly happen close to the basket. This in all would indicate that the Bucks have improved as a team from 2009-2024.
+
+\newpage
 
 ```{r, echo = FALSE, warning=FALSE, message = FALSE}
+/page
 salaries <- hoopshype_salaries(
   teams = NULL,
   all_teams = TRUE, 
@@ -165,112 +190,16 @@ bball_court +
   ) +  facet_wrap(~ salary_bracket) #facet by salary level for easy comparison
 
 ```
-Main Findings: 
 
-*Over time, shots have become more clustered around the three point line and close to the basket.
-
-*The use of the three point shot has increased over the last 15 years.
-
-*Lay-up shots are more common in 2014-2024 than in 2009. 
-
-*Accuracy in lay up shots has increased over time. 
-
-*Compared to 2009, the 2024 season saw less shots taken past the three point line. 
-
-*Shots taken were more spread out in 2009 and 2014. 
-
-
-
-Futher Inferences:
-
-Over time the Milwaukee Bucks shoting locations have become more strategic. Shots are commonly taken on the three point line. This can be inferred due to the increase in points clustered around the three point line in the most recent season compared to seasons past.In 2009 and 2014 for example the point density in the graphs around the three point line is less than in 2019 and 2024. Less shots are also taken far away from the three point line. In more recent seasons less shots were taken outside of the three point line. It seems that this could be a more strategic use of the three point line. 
-
-In 2024, shots are commonly clustered around the basket indicating a use of lay-up shots. 2009 saw less utilization of this type of shot. Overtime there seems to be increase in the amount of lay-ups taken due to the clustering of points.This seems to be a more strategic shot location due in part to the likelihood of success and the evidence of a clustering of made shots indicated by the green points. 
-
-Overall, the shots taken by the Milwaukee Bucks have become more efficient and strategic of high scoring and high likelihood of success. The increased utilization of the three point line indicates a strategy to score higher points per shot. The increased use of the lay-up shot and those close to the basket could indicate a strategy in taking shots that have a high likelihood of success. The clustering of green points in the later season backs up this strategy showing that made shots commoningly happen close to the basket. This in all would indicate that the Bucks have improved as a team from 2009-2024. 
-
-Future Contracted Pay: 
+Future Contracted Pay and Shots Findings: 
 
 In the above graphic, shot effectiveness and location for the 2024 season is graphed. Whether or not the shot was made is indicated by color. On the three different versions the shots are separated based on future contracted pay for the 2025 season. High pay contains shots made by players with over 20 million contracted. Middle pay contains shots made by players with contracted pay between 20 million and 5 million dollars. Low pay contains shots made by players with less than 5 million dollars contracted pay for the 2025 season. The players that are getting paid more in the future took more of the shots in 2024. The amount of shots taken decreases as pay decreases. This indicates that star players will get paid more than players who are not in the spotlight. 
 
+   
+ 
 
+   - 
 
-
-
-
-
-## The Tasks
-
-fig.width = 10, fig.height = 10 - put in r{}
-
-1. (30 points) Produce a graphic displaying the shot locations for a particular team over several years. Some notes:
-
-   - Colors should be chosen to reflect the team, if possible.
-   
-   - There are likely many overlaid points -- handle this by either binning these by location, or use opacity.
-   
-   - Incorporate information about whether the shot was made or not (shape, color, etc.).
-   
-   - The graphic should be well-labeled, titled, etc.
-   
-   - Start with a graph for a single year, then extend to several years. Up to 20 years of shot data is available. Either facet these by year or animate using the years.
-   
-   - You'll want to figure out what the coordinates mean somehow. This might be through the documentation, but could also be determined using aspects of the data itself and the dimensions of an NBA court.
-   
-    - Put a basketball court on the background of the image (you'll need to scale it appropriately).
-    
-    Done
-   
-2. (30 points) Summarize the graphic/series of graphics into a digestible, bullet-point brief report for front-office staff. Some notes:
-
-   - The main body of the report should be very brief -- just the graphic(s) and the bullet-pointed list of findings, which should be short and clear.
-   
-   - Include a more detailed explanation of these bullet points, for further reading by those interested. This section should follow the bullet-point section, but should be organized similarly for reference. 
-   
-   - Your report to the front-office shouldn't include any code.
-   
-   - This report should be generated using RMarkdown. However, the choice of output type (Word, PDF, or HTML) is up to you (you could even make slides if you want to). 
-   
-3. (30 points) Write and document clean, efficient, reproducible code. Some notes:
-
-   - This code will be viewed by your direct supervisor.
-   
-   - The code file should include your code to gather, join, and clean the data; the code to generate the graphic(s) presented; and your commentary on the results (so, a single .rmd file, or an .rmd file that sources an .r file).
-   
-   - Your code should be clean, organized, and reproducible. Remove unnecessary/scratch/exploratory code.
-   
-   - Your code should be well commented. In particular, any decisions or judgement calls made in the analysis process should be explained/justified. Sections of code should be identified even if not functionalized (including purpose, data/argument inputs, analysis outputs).
-   
-4. (10 points) Above and Beyond. Choose either option below. You are welcome to explore both, but only one is required. 
-
-  - Option 1: Explore the data a bit, and create a graphic that uses (or incorporates) different information than what was used above. Some notes:
-    - Create an additional graphic that incorporates at least one additional variable not previously used (this should add to the graphic in part 1). The additional data should be drawn from a different dataset (function call) than the original graphic used. These two (or more) datasets may need to be joined appropriately.
-    
-    - You can either add more information to the plot above, or create a different plot. 
-    
-     - Formatting, labelling, etc. are all important here too.
-     
-    - Adding marginal densities or other "bells and whistles" might offer additional insight.
-    
-    - This graphic should be included at the end of the report (after the more detailed explanations). 
-    
-     - You should include a brief description of the graphic (highlighting the different/additional information used).
-     
-     
-     
-     
-  - Option 2: If the NBA were to incorporate a 4-point shot, where would you draw a 4-point arc? Some notes:
-    - You likely should base your decision at least partly on proportion of shots made from a given range. You might consider an expected value calculation here.
-    - Your arc can be shaped as you see fit; simple arcs are sufficient for this exploration.
-    - Provide an example of a consequence (positive or negative) if a 4-point shot was incorporated. (e.g., "my_favorite_player's season point total would increase by x%")
-    - You do not need to create a plot representing your arc, though you are welcome to do so!
-
-  
-## The Deliverables
-
-1. Upload your report and code file(s) to GitHub by 11:00am on Friday, April 4.
-2. Submit (on Canvas) your report, code, and link to your GitHub repository by 11:00am on Friday, April 4.
-  
   
   
   
