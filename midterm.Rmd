@@ -139,7 +139,6 @@ Overall, the shots taken by the Milwaukee Bucks have become more efficient and s
 \newpage
 
 ```{r, echo = FALSE, warning=FALSE, message = FALSE}
-/page
 salaries <- hoopshype_salaries(
   teams = NULL,
   all_teams = TRUE, 
