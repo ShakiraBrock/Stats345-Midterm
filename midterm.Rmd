@@ -30,7 +30,7 @@ bucks_shots_24_unclean <- teams_shots(
   date_from = NA,
   date_to = NA,
   nest_data = F,
-  return_message = T
+  return_message = F
 ) #Loading in shooting data for the most recent full season
 
 bucks_shots_24 <- bucks_shots_24_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer") #Selecting only relevant columns: shot outcome, shot location, year of season, name of player 
@@ -47,7 +47,7 @@ bucks_shots_19_unclean <- teams_shots(
   date_from = NA,
   date_to = NA,
   nest_data = F,
-  return_message = T
+  return_message = F
 ) #Loading in data for 2019 season, five years from the most recent full season
 bucks_shots_19 <- bucks_shots_19_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer") #Selecting only relevant columns: shot outcome, shot location, year of season, name of player 
 
@@ -63,7 +63,7 @@ bucks_shots_14_unclean <- teams_shots(
   date_from = NA,
   date_to = NA,
   nest_data = F,
-  return_message = T
+  return_message = F
 ) #Loading in data for 2014 season, 10 years from the most recent full season
 bucks_shots_14 <- bucks_shots_14_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer") #Selecting only relevant columns: shot outcome, shot location, year of season, name of player 
 
@@ -79,12 +79,13 @@ bucks_shots_09_unclean <- teams_shots(
   date_from = NA,
   date_to = NA,
   nest_data = F,
-  return_message = T
+  return_message = F
 ) #Loading in data for 2009 season, 15 years from the most recent full season
 bucks_shots_09 <- bucks_shots_09_unclean %>% select("isShotMade", "locationX", "locationY", "yearSeason", "namePlayer") #Selecting only relevant columns: shot outcome, shot location, year of season, name of player 
 
 
 bucks_shots_list <- list(bucks_shots_24, bucks_shots_19, bucks_shots_14, bucks_shots_09)#combining all of the shot data from 2009, 2014, 2019, and 2024 into one list
+#These years were used because I wanted data from every five years
 
 bucks_shots_all <- reduce(bucks_shots_list, full_join, by = colnames(bucks_shots_24)) #reducing all of shot data that way it could be faceted by year as graphs
 ```
@@ -113,6 +114,8 @@ guides(color = guide_legend(override.aes = list(size = 4, alpha = 1))) + #Makes 
         axis.ticks = element_blank(),
         axis.title = element_blank()) #Exclude any X/Y axis lines because it wouldn't be appropriate on top of the court image
 ```
+
+
 Main Findings: 
 
 *Over time, shots have become more clustered around the three point line and close to the basket.
@@ -139,14 +142,14 @@ Overall, the shots taken by the Milwaukee Bucks have become more efficient and s
 \newpage
 
 ```{r, echo = FALSE, warning=FALSE, message = FALSE}
-salaries <- hoopshype_salaries(
+salaries <- suppressMessages(suppressWarnings(hoopshype_salaries(
   teams = NULL,
   all_teams = TRUE, 
   assume_player_opt_out = TRUE,
   assume_team_doesnt_exercise = TRUE,
   nest_data = FALSE,
-  return_message = TRUE
-) %>% #Salaries for NBA players pulled
+  return_message = FALSE
+))) %>% #Salaries for NBA players pulled
   filter(urlTeamSalaryHoopsHype == "https://hoopshype.com/salaries/milwaukee_bucks/") #including only the Milwaukee Bucks
 
 salaries_clean <- salaries %>% filter(slugSeason == "2024-25") %>% #Including future contracted pay for the season directly after the shot data plotted
