@@ -132,16 +132,16 @@ Main Findings:
 
 Futher Inferences:
 
-Over time the Milwaukee Bucks shoting locations have become more strategic. Shots are commonly taken on the three-point line. This can be inferred due to the increase in points clustered around the three-point line in the most recent season compared to seasons past. In 2009 and 2014 for example the point density in the graphs around the three-point line is less than in 2019 and 2024. Less shots are also taken far away from the three-point line. In more recent seasons less, shots were taken outside of the three-point line. It seems that this could be a more strategic use of the three-point line.
+Over time the Milwaukee Bucks shoting locations have become more strategic. Shots are commonly taken on the three-point line. This can be inferred due to the increase in points clustered around the three-point line in the most recent season compared to seasons past. In 2009 and 2014 for example the point density in the graphs around the three-point line is less than in 2019 and 2024. In more recent seasons less shots were taken outside of the three-point line. It seems that this could be a more strategic use of the three-point line.
 
 In 2024, shots are commonly clustered around the basket, indicating a use of lay-up shots. 2009 saw less utilization of this type of shot. Overtime there seems to be an increase in the number of lay-ups taken due to the clustering of points. This seems to be a more strategic shot location due in part to the likelihood of success and the evidence of a clustering of made shots indicated by the green points.
 
-Overall, the shots taken by the Milwaukee Bucks have become more efficient and strategic of high scoring and high likelihood of success. The increased utilization of the three-point line indicates a strategy to score higher points per shot. The increased use of the lay-up shot and those close to the basket could indicate a strategy in taking shots that have a high likelihood of success. The clustering of green points in the later season backs up this strategy showing that made shots commoningly happen close to the basket. This in all would indicate that the Bucks have improved as a team from 2009-2024.
+Overall, the shots taken by the Milwaukee Bucks have become more efficient and strategic of high scoring and high likelihood of success. The increased utilization of the three-point line indicates a strategy to score higher points per shot. The increased use of the lay-up shot and those close to the basket could indicate a strategy in taking shots that have a high likelihood of success. The clustering of green points in the later seasons backs up this strategy showing that made shots commoningly happen close to the basket. This in all would indicate that the Bucks have improved as a team from 2009-2024.
 
 
 \newpage
 
-```{r, echo = FALSE, warning=FALSE, message = FALSE}
+```{r, echo = FALSE, warning=FALSE, message = FALSE, fig.width = 10}
 salaries <- suppressMessages(suppressWarnings(hoopshype_salaries(
   teams = NULL,
   all_teams = TRUE, 
@@ -195,7 +195,7 @@ bball_court +
 
 Future Contracted Pay and Shots Findings:
 
-In the above graphic, shot effectiveness and location for the 2024 season is graphed. Whether or not the shot was made is indicated by color. On the three different versions the shots are separated based on future contracted pay for the 2025 season. High pay contains shots made by players with over 20 million contracted. Middle pay contains shots made by players with contracted pay between 20 million and 5 million dollars. Low pay contains shots made by players with less than 5 million dollars contracted pay for the 2025 season. The players that are getting paid more in the future took more shots in 2024. The number of shots taken decreases as pay decreases. This indicates that star players will get paid more than players who are not in the spotlight.
+In the above graphic, shot effectiveness and location for the 2024 season is graphed. Whether or not the shot was made is indicated by color. On the three different versions the shots are separated based on future contracted pay for the 2025 season. High pay contains shots made by players with over 20 million contracted. Middle pay contains shots made by players with contracted pay between 20 million and 5 million dollars. Low pay contains shots made by players with less than 5 million dollars contracted for the 2025 season. The players that are getting paid more in the future took more shots in 2024. The number of shots taken decreases as pay decreases. This indicates that star players will get paid more than players who are not in the spotlight. There seems to be similar clusterings around the three point line in all three levels of pay indicating that all players may have a preference for the three point line as a shoting location. 
 
 
    
